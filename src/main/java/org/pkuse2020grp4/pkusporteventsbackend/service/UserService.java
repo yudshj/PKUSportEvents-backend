@@ -11,16 +11,20 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public Boolean checkUser(String username, String password){
-        if(userRepository.findUserByUsername(username).getPassword().equals(password))
-            return true;
-        else
-            return false;
+    public int checkUser(User user){
+        User findResult = userRepository.findUserByUsername(user.getUsername());
+        if (findResult == null)
+            return 1;
+        if (!findResult.getPassword().equals(user.getPassword()))
+            return 2;
+        return 0;
     }
 
     public int registerUser(User user){
-        String username = user.getUsername();
-        String password = user.getPassword();
+        if (userRepository.existsUserByUsername(user.getUsername()))
+            return 1;
+        if (user.getPassword().length() < 6)
+            return 2;
         user.setUid(UID.genNewUID());
         /*
             user.setSalt(genSalt());
