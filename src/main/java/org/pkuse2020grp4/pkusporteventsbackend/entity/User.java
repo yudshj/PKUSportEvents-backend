@@ -20,8 +20,15 @@ public class User {
     @Column(name = "uid")
     private Integer uid;
 
+    private String username;
+
     private String password;
 
-    private String username;
+    private String salt;
+
+    public User(String username, String password){
+        this.password = password;
+        this.username = username;
+    }
 
 }

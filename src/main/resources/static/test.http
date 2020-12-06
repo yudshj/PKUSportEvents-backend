@@ -1,3 +1,3 @@
-POST http://localhost:8080/user/add?username=soda&password=123456789
+GET http://localhost:8080/user/register?username=soda&password=123456789&repeatPassword=123456789
 
 ###
