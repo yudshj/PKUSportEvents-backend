@@ -2,17 +2,15 @@ package org.pkuse2020grp4.pkusporteventsbackend.utils;
 
 import lombok.*;
 
+@Deprecated
 @Data
+@AllArgsConstructor
 public class Filter {
 
     public enum Sequence{
         Positive, Reverse
     }
 
-    /*
-     if not null, user subscribed
-     */
-    private  String username;
     /*
         if Positive, earlier first
      */
@@ -22,13 +20,6 @@ public class Filter {
         if -1, mean no day distance
      */
     private Integer dayDistance;
-
-    public Filter(String username, Sequence dateSequence, Sequence nameSequence, Integer dayDistance){
-        this.username = username;
-        this.dateSequence = dateSequence;
-        this.nameSequence = nameSequence;
-        this.dayDistance = dayDistance;
-    }
 
     static public Sequence int2Sequence(Integer input){
         if(input == 0)

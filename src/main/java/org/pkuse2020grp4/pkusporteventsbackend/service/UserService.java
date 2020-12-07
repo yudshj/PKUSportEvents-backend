@@ -22,15 +22,23 @@ public class UserService {
         return 0;
     }
 
-    public Result registerUser(User user){
+    public Integer registerUser(User user){
         if (userRepository.existsUserByUsername(user.getUsername()))
-            return new Result(1, "Dulicated username", null);
+            return 1;
         if (user.getPassword().length() < 6)
-            return new Result(2, "Too simple password", null);
+            return 2;
         user.setUid(UID.genNewUID());
-        user.setSalt(Salt.generateSalt());
-        user.setPassword(Salt.salty(user.getPassword(), user.getSalt()));
+        user.setSalt(Salt.generateSalt(0));
+        user.setPassword(Salt.salty(user.getPassword(), user.getSalt(), 0));
         userRepository.save(user);
-        return new Result(0, "Dulicated username", user.getSalt());
+        return 0;
+    }
+
+    public Boolean existUser(String username){
+        return userRepository.existsUserByUsername(username);
+    }
+
+    public String getSalt(String username){
+        return userRepository.findUserByUsername(username).getSalt();
     }
 }
