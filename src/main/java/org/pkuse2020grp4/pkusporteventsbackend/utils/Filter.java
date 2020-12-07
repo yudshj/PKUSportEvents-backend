@@ -1,6 +1,9 @@
 package org.pkuse2020grp4.pkusporteventsbackend.utils;
 
 import lombok.*;
+import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
+
+import java.util.List;
 
 @Data
 public class Filter {
@@ -10,9 +13,9 @@ public class Filter {
     }
 
     /*
-     if not null, user subscribed
+     if not null, user interest
      */
-    private  String username;
+    private List<Tag> tags;
     /*
         if Positive, earlier first
      */
@@ -23,8 +26,8 @@ public class Filter {
      */
     private Integer dayDistance;
 
-    public Filter(String username, Sequence dateSequence, Sequence nameSequence, Integer dayDistance){
-        this.username = username;
+    public Filter(List<Tag> tags, Sequence dateSequence, Sequence nameSequence, Integer dayDistance){
+        this.tags = tags;
         this.dateSequence = dateSequence;
         this.nameSequence = nameSequence;
         this.dayDistance = dayDistance;

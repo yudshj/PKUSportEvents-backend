@@ -28,7 +28,7 @@ public class User {
     private String salt;
 
     @OneToMany
-    private List<Article> subscribe;
+    private List<Tag> interestTags;
 
     public User(String username, String password){
         this.password = password;
