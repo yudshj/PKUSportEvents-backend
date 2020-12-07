@@ -1,0 +1,19 @@
+package org.pkuse2020grp4.pkusporteventsbackend.controller;
+
+import org.pkuse2020grp4.pkusporteventsbackend.exception.NoTokenException;
+import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+@RestControllerAdvice
+public class ErrorController {
+
+    @ExceptionHandler(Exception.class)
+    public Result handlerException(Exception e){
+        return new Result(-1, e.getClass().getName() + ": " + e.getMessage(), null);
+    }
+    @ExceptionHandler(NoTokenException.class)
+    public Result handlerNoTokenException(NoTokenException e){
+        return new Result(1, e.getMessage(), null);
+    }
+}

@@ -13,10 +13,13 @@ public class Result {
         this.msg = msg;
         this.data = data;
     }
-    static public Result buildSuccessResult(String msg, Object data){
+    static public Result buildSuccessResult(String msg){
         return new Result(0, msg, null);
     }
-    static public Result buildFailResult(String msg, Object data){
+    static public Result buildSuccessResult(String msg, Object data){
+        return new Result(0, msg, data);
+    }
+    static public Result buildFailResult(String msg){
         return new Result(1, msg, null);
     }
 }
