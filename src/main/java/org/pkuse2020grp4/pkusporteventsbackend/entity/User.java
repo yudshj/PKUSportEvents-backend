@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -25,6 +26,9 @@ public class User {
     private String password;
 
     private String salt;
+
+    @OneToMany
+    private List<Article> subscribe;
 
     public User(String username, String password){
         this.password = password;
