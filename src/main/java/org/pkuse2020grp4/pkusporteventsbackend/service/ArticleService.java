@@ -1,6 +1,7 @@
 package org.pkuse2020grp4.pkusporteventsbackend.service;
 
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
+import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.ArticleRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.UserRepository;
@@ -24,51 +25,19 @@ public class ArticleService {
 
     public List<Article> getAllArticles() {
         List<Article> articles;
-        Sort sort = Sort.by(Sort.Direction.DESC, "id");
+        Sort sort = Sort.by(Sort.Direction.DESC, "article_id");
         articles = articleRepository.findAll(sort);
         return articles;
     }
 
-    public List<Article> getArticles(Filter filter){
-        List<Article> list;
-        if(filter.getDayDistance() != -1){
-            Date date = new Date();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            cal.add(Calendar.DATE, - filter.getDayDistance());
-            list = articleRepository.findArticlesByReleaseDateIsAfter(cal.getTime());
-        }
-        else{
-            list = articleRepository.findAll();
-        }
-        if(filter.getDateSequence() == Filter.Sequence.Reverse){
-            list.sort(new Comparator<Article>() {
-                @Override
-                public int compare(Article o1, Article o2) {
-                    return - o1.getReleaseDate().compareTo(o2.getReleaseDate());
-                }
-            });
-        }
-        if(filter.getNameSequence() == Filter.Sequence.Positive){
-            list.sort(new Comparator<Article>() {
-                @Override
-                public int compare(Article o1, Article o2) {
-                    return o1.getTitle().compareTo(o2.getTitle());
-                }
-            });
-        }
-        else{
-            list.sort(new Comparator<Article>() {
-                @Override
-                public int compare(Article o1, Article o2) {
-                    return - o1.getTitle().compareTo(o2.getTitle());
-                }
-            });
-        }
-        return list;
+    public List<Article> getArticles(List<Tag> filterTags){
+        List<Article> articles;
+        Sort sort = Sort.by(Sort.Direction.DESC, "article_id");
+        articles = articleRepository.findArticlesByTagsIsIn(filterTags, sort);
+        return articles;
     }
 
-    public void addOrUpdateArticle(Article article){
+    public void addArticle(Article article){
         articleRepository.save(article);
     }
 

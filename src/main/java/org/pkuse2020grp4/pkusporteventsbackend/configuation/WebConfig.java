@@ -1,5 +1,6 @@
 package org.pkuse2020grp4.pkusporteventsbackend.configuation;
 
+import org.pkuse2020grp4.pkusporteventsbackend.handler.ArticleHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,5 +21,15 @@ public class WebConfig extends WebMvcConfigurationSupport {
     @Bean
     public AuthenticationInterceptor createAuthenticationInterceptor(){
         return new AuthenticationInterceptor();
+    }
+
+    @Bean
+    ArticleHandlerMethodArgumentResolver createUserHandlerMethodArgumentResolver(){
+        return new ArticleHandlerMethodArgumentResolver();
+    }
+
+    @Override
+    protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
+        argumentResolvers.add(createUserHandlerMethodArgumentResolver());
     }
 }

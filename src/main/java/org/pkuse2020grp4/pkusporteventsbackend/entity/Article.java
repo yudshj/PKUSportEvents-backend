@@ -18,8 +18,8 @@ import java.util.List;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "article_id")
+    private Integer articleId;
 
     private Integer authorId;
 
@@ -29,6 +29,9 @@ public class Article {
 
     private String content;
 
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "r_article_tag",
+            joinColumns = {@JoinColumn(name = "article_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private List<Tag> tags;
 }

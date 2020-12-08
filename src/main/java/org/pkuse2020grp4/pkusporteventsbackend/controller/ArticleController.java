@@ -1,6 +1,7 @@
 package org.pkuse2020grp4.pkusporteventsbackend.controller;
 
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
+import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.ArticleRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.service.ArticleService;
@@ -24,13 +25,17 @@ public class ArticleController {
     public Result get(@PathVariable("id") int articleId) {
         return Result.buildSuccessResult("success", articleId + "data");
     }
+
     @PostMapping("/api/article/getlist")
-    public Result getList(@RequestBody @Valid Filter filter){
-        List<Article> list = articleService.getArticles(filter);
-        if(list.size() == 0)
-            return Result.buildFailResult("No target article found");
-        else
-            return Result.buildSuccessResult("Get articles", list);
+    public Result getList(@RequestBody @Valid List<Tag> filterTags){
+        List<Article> list = articleService.getArticles(filterTags);
+        return Result.buildSuccessResult("Get articles", list);
+    }
+
+    @PostMapping("/api/article/add")
+    public Result addArticle(@RequestBody @Valid Article article){
+        articleService.addArticle(article);
+        return Result.buildSuccessResult("Successfully added article.");
     }
 
 }

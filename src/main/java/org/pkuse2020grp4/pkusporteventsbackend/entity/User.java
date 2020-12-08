@@ -18,8 +18,8 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "uid")
-    private Integer uid;
+    @Column(name = "user_id")
+    private Integer userId;
 
     private String username;
 
@@ -27,7 +27,10 @@ public class User {
 
     private String salt;
 
-    @OneToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "r_user_tag",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private List<Tag> interestTags;
 
     public User(String username, String password){

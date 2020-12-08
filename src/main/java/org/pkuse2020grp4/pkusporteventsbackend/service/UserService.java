@@ -27,7 +27,7 @@ public class UserService {
             return 1;
         if (user.getPassword().length() < 6)
             return 2;
-        user.setUid(UID.genNewUID());
+        user.setUserId(UID.genNewUID());
         user.setSalt(Salt.generateSalt(0));
         user.setPassword(Salt.salty(user.getPassword(), user.getSalt(), 0));
         userRepository.save(user);
