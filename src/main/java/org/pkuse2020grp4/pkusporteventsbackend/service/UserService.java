@@ -28,8 +28,8 @@ public class UserService {
         if (user.getPassword().length() < 6)
             return 2;
         user.setUserId(UID.genNewUID());
-        user.setSalt(Salt.generateSalt(0));
-        user.setPassword(Salt.salty(user.getPassword(), user.getSalt(), 0));
+        // user.setSalt(Salt.generateSalt(0));
+        // user.setPassword(Salt.salty(user.getPassword(), user.getSalt(), 0));
         userRepository.save(user);
         return 0;
     }
@@ -38,7 +38,7 @@ public class UserService {
         return userRepository.existsUserByUsername(username);
     }
 
-    public String getSalt(String username){
-        return userRepository.findUserByUsername(username).getSalt();
-    }
+    // public String getSalt(String username){
+    //     return userRepository.findUserByUsername(username).getSalt();
+    // }
 }

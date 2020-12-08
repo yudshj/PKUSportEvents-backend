@@ -25,14 +25,14 @@ public class ArticleService {
 
     public List<Article> getAllArticles() {
         List<Article> articles;
-        Sort sort = Sort.by(Sort.Direction.DESC, "article_id");
+        Sort sort = Sort.by(Sort.Direction.DESC, "articleId");
         articles = articleRepository.findAll(sort);
         return articles;
     }
 
     public List<Article> getArticles(List<Tag> filterTags){
         List<Article> articles;
-        Sort sort = Sort.by(Sort.Direction.DESC, "article_id");
+        Sort sort = Sort.by(Sort.Direction.DESC, "articleId");
         articles = articleRepository.findArticlesByTagsIsIn(filterTags, sort);
         return articles;
     }

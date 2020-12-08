@@ -18,6 +18,9 @@ public class JwtUtils {
             Date expire = Date.from(LocalDate.now().plusDays(15).atStartOfDay(ZoneId.systemDefault()).toInstant());
             token = JWT.create()
                     .withClaim("username", user.getUsername())
+                    .withClaim("user_id", user.getUserId())
+                    // .withClaim("user_tags", user.getInterestTags())
+                    // 这里注释掉，是否传List会拖慢速度？
                     .withExpiresAt(expire)
                     .sign(Algorithm.HMAC256(jwtConfig.getSecret()));
         } catch (Exception e){

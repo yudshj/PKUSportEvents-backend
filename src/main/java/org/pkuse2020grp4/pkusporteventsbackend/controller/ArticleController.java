@@ -19,6 +19,7 @@ import java.util.List;
 @RestController
 public class ArticleController {
 
+    @Autowired
     private ArticleService articleService;
 
     @PostMapping("/api/article/get/{id}")
@@ -27,9 +28,15 @@ public class ArticleController {
     }
 
     @PostMapping("/api/article/getlist")
-    public Result getList(@RequestBody @Valid List<Tag> filterTags){
+    public Result getArticlesWithFilter(@RequestBody @Valid List<Tag> filterTags){
         List<Article> list = articleService.getArticles(filterTags);
-        return Result.buildSuccessResult("Get articles", list);
+        return Result.buildSuccessResult("Get articles with filter", list);
+    }
+
+    @PostMapping("/api/article/getall")
+    public Result getAllArticles(){
+        List<Article> list = articleService.getAllArticles();
+        return Result.buildSuccessResult("Get all articles", list);
     }
 
     @PostMapping("/api/article/add")
