@@ -1,13 +1,17 @@
 package org.pkuse2020grp4.pkusporteventsbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "article")
 @ToString
@@ -15,18 +19,20 @@ import java.util.Date;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "article_id")
+    private int articleId;
 
-    @Column(name = "author_id")
-    private Integer authorId;
+    private int authorId;
 
-    @Column(name = "release_date")
     private Date releaseDate;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "content")
     private String content;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "r_article_tag",
+            joinColumns = {@JoinColumn(name = "article_id")},
+            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    private List<Tag> tags;
 }

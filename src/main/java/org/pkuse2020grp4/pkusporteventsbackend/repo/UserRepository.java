@@ -6,6 +6,6 @@ import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
     User findUserByUsername(String username);
-    User findUserByUid(Integer uid);
+    User findUserByUserId(Integer userId);
     boolean existsUserByUsername(String username);
 }
