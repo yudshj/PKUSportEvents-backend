@@ -1,9 +1,9 @@
 package org.pkuse2020grp4.pkusporteventsbackend.service;
 
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
+import org.pkuse2020grp4.pkusporteventsbackend.exception.PasswordNotValidException;
+import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.UserRepository;
-import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
-import org.pkuse2020grp4.pkusporteventsbackend.utils.Salt;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.UID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +13,13 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public int checkUser(User user){
+    public int getUserId(User user) throws Exception {
         User findResult = userRepository.findUserByUsername(user.getUsername());
         if (findResult == null)
-            return 1;
+            throw new UserNotFoundException(user.getUsername());
         if (!findResult.getPassword().equals(user.getPassword()))
-            return 2;
-        return 0;
+            throw new PasswordNotValidException();
+        return findResult.getUserId();
     }
 
     public Integer registerUser(User user){

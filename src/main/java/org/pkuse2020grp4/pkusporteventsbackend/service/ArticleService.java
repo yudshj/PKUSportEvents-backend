@@ -2,17 +2,12 @@ package org.pkuse2020grp4.pkusporteventsbackend.service;
 
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
-import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.ArticleRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.UserRepository;
-import org.pkuse2020grp4.pkusporteventsbackend.utils.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 @Service

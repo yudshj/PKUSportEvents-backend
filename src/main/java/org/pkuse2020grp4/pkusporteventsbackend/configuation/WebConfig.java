@@ -5,6 +5,7 @@ import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterce
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -24,12 +25,25 @@ public class WebConfig extends WebMvcConfigurationSupport {
     }
 
     @Bean
-    ArticleHandlerMethodArgumentResolver createUserHandlerMethodArgumentResolver(){
+    ArticleHandlerMethodArgumentResolver createArticleHandlerMethodArgumentResolver(){
         return new ArticleHandlerMethodArgumentResolver();
     }
 
     @Override
     protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(createUserHandlerMethodArgumentResolver());
+        argumentResolvers.add(createArticleHandlerMethodArgumentResolver());
     }
+
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:8181", "null")
+                .allowedOrigins("http://10.128.188.208:8181", "null")
+                .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
+                .maxAge(3600)
+                .allowCredentials(true);
+    }
+
+
 }
