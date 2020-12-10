@@ -1,11 +1,9 @@
 package org.pkuse2020grp4.pkusporteventsbackend.controller;
 
+import org.pkuse2020grp4.pkusporteventsbackend.annotation.CheckedArticle;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
-import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
-import org.pkuse2020grp4.pkusporteventsbackend.repo.ArticleRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.service.ArticleService;
-import org.pkuse2020grp4.pkusporteventsbackend.utils.Filter;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,7 +38,7 @@ public class ArticleController {
     }
 
     @PostMapping("/api/article/add")
-    public Result addArticle(@RequestBody @Valid Article article){
+    public Result addArticle(@CheckedArticle Article article){
         articleService.addArticle(article);
         return Result.buildSuccessResult("Successfully added article.");
     }
