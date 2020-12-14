@@ -1,10 +1,12 @@
 package org.pkuse2020grp4.pkusporteventsbackend.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -23,7 +25,8 @@ public class Tag {
 
     private String name;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = "tags",fetch = FetchType.EAGER)
     @JSONField(serialize=false)
-    Set<Article> articles;
+    @JsonIgnore
+    Set<Article> articles=new HashSet<>();
 }

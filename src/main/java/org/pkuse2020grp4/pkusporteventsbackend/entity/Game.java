@@ -3,36 +3,36 @@ package org.pkuse2020grp4.pkusporteventsbackend.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "article")
+@Table(name = "game")
 @ToString
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
-public class Article {
+/*@Inheritance(strategy = InheritanceType.SINGLE_TABLE)*/
+public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "article_id")
-    private int articleId;
+    @Column(name = "game_id")
+    private int gameId;
 
-    private int authorId;
-
-    private Date releaseDate;
+    private int mark;
 
     private String title;
 
     private String content;
 
-    @ManyToMany( fetch = FetchType.EAGER)
-    @JoinTable(name = "r_article_tag",
-            joinColumns = {@JoinColumn(name = "article_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-    private List<Tag> tags;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "game_team", joinColumns = @JoinColumn(name = "game_id"))
+    private Set<Team> teams=new HashSet<>();
 }
+

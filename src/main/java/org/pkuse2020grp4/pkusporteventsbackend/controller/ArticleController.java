@@ -43,4 +43,10 @@ public class ArticleController {
         return Result.buildSuccessResult("Successfully added article.");
     }
 
+    @PostMapping("/api/article/edit")
+    public Result editArticle(){
+        List<Tag> tags=articleService.getAllTags();
+        return Result.buildSuccessResult("Got all tags.",tags);
+    }
+
 }
