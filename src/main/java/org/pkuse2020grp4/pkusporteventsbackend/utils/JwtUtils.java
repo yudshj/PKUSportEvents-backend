@@ -4,9 +4,13 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import org.apache.coyote.Request;
 import org.pkuse2020grp4.pkusporteventsbackend.configuation.JwtConfig;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
+import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -33,5 +37,18 @@ public class JwtUtils {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(jwtConfig.getSecret())).build();
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getClaims();
+    }
+    public static String RequestToText(NativeWebRequest nativeWebRequest) throws Exception
+    {
+        HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
+        // 把reqeust的body读取到StringBuilder
+        BufferedReader reader = request.getReader();
+        StringBuilder sb = new StringBuilder();
+        char[] buf = new char[1024];
+        int rd;
+        while((rd = reader.read(buf)) != -1){
+            sb.append(buf, 0, rd);
+        }
+        return sb.toString();
     }
 }

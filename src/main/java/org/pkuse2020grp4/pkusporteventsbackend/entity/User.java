@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Data
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "user")
 @ToString
+@Transactional
 @JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
 public class User {
     @Id
