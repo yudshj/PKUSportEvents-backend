@@ -24,13 +24,6 @@ public class ArticleService {
     @Autowired
     TagRepository tagRepository;
 
-    public List<Tag> getAllTags(){
-        List<Tag> tags;
-        Sort sort=Sort.by(Sort.Direction.ASC,"tagId");
-        tags=tagRepository.findAll(sort);
-        return tags;
-    }
-
     public List<Article> getAllArticles() {
         List<Article> articles;
         Sort sort = Sort.by(Sort.Direction.DESC, "articleId");
@@ -59,11 +52,11 @@ public class ArticleService {
                 tags.add(tagInBase);
             }
 
-            for (Tag tag:
-                 tags) {
-                tag.getArticles().add(article);
-                tagRepository.save(tag);
-            }
+            // for (Tag tag:
+            //      tags) {
+            //     tag.getArticles().add(article);
+            //     tagRepository.save(tag);
+            // }
 
             articleRepository.save(article);
         }

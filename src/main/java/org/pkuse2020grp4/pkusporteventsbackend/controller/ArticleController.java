@@ -4,6 +4,7 @@ import org.pkuse2020grp4.pkusporteventsbackend.annotation.CheckedArticle;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
 import org.pkuse2020grp4.pkusporteventsbackend.service.ArticleService;
+import org.pkuse2020grp4.pkusporteventsbackend.service.TagService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private TagService tagService;
 
     @PostMapping("/api/article/get/{id}")
     public Result get(@PathVariable("id") int articleId) {
@@ -45,7 +49,7 @@ public class ArticleController {
 
     @PostMapping("/api/article/edit")
     public Result editArticle(){
-        List<Tag> tags=articleService.getAllTags();
+        List<Tag> tags = tagService.getAllTags();
         return Result.buildSuccessResult("Got all tags.",tags);
     }
 
