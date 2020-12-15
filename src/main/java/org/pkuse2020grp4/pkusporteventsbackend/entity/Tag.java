@@ -26,7 +26,6 @@ public class Tag {
     private String name;
 
     @ManyToMany(mappedBy = "tags",fetch = FetchType.EAGER)
-    @JSONField(serialize=false)
     @JsonIgnore
     Set<Article> articles=new HashSet<>();
 }

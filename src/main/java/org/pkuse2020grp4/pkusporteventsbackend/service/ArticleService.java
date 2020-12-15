@@ -39,30 +39,7 @@ public class ArticleService {
     }
 
     public void addArticle(Article article){
-        try {
-            List<Tag> sendTags=article.getTags();
-            List<Tag> tags=new LinkedList<>();
-
-            for (Tag t:
-                 sendTags) {
-                int tagId=t.getTagId();
-                Tag tagInBase=tagRepository.findTagByTagId(tagId);
-                if(tagInBase==null)
-                    throw new TagIdNotFoundException(tagId);
-                tags.add(tagInBase);
-            }
-
-            // for (Tag tag:
-            //      tags) {
-            //     tag.getArticles().add(article);
-            //     tagRepository.save(tag);
-            // }
-
-            articleRepository.save(article);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        articleRepository.save(article);
     }
 
     public void deleteById(int id) {

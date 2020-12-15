@@ -1,9 +1,10 @@
 package org.pkuse2020grp4.pkusporteventsbackend.handler;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.Claim;
 import com.google.common.collect.ImmutableList;
-import org.apache.coyote.Request;
 import org.pkuse2020grp4.pkusporteventsbackend.annotation.CheckedArticle;
 import org.pkuse2020grp4.pkusporteventsbackend.configuation.JwtConfig;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
@@ -15,21 +16,18 @@ import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterce
 import org.pkuse2020grp4.pkusporteventsbackend.repo.TagRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.UserRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
+import org.pkuse2020grp4.pkusporteventsbackend.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
-import org.springframework.lang.NonNullApi;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.SystemException;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.*;
 
 public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
@@ -54,61 +52,54 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
         String token = nativeWebRequest.getHeader("token");
         Map<String, Claim> verify = JwtUtils.verify(token, jwtConfig);
         int userId = verify.get("user_id").asInt();
-        System.out.println(userId);
         try {
             User currentUser = userRepository.findUserByUserId(verify.get("user_id").asInt());
-            if (!currentUser.getUsername().equals(verify.get("username").asString())) {
+            if (currentUser.getUserId() != verify.get("user_id").asInt()) {
                 throw new SystemException("Token not valid!");
             }
         }
         catch (EntityNotFoundException e) {
             throw new UserNotFoundException(userId);
         }
-        Article article=new Article();
-        try {
-            logger.info(String.format("User ID %d added article.", userId));
-            Map<String, String[]> pmp = nativeWebRequest.getParameterMap();
-            for (Map.Entry<String, String[]> entry :
-                    pmp.entrySet()) {
-                System.out.println(entry.getKey());
-                String[] strs = entry.getValue();
-                for (String s :
-                        strs) {
-                    System.out.println(s);
-                }
+
+        logger.info(String.format("User (ID %d) wants to add an article.", userId));
+
+
+        /*
+        Map<String, String[]> pmp = nativeWebRequest.getParameterMap();
+        for (Map.Entry<String, String[]> entry :
+                pmp.entrySet()) {
+            System.out.println(entry.getKey());
+            String[] strs = entry.getValue();
+            for (String s :
+                    strs) {
+                System.out.println(s);
             }
-            System.out.println(methodParameter.toString());
+        }
 
-            System.out.println(nativeWebRequest.toString());
+        System.out.println(sb.toString());
+        */
+        String requestText = WebUtils.RequestToText(nativeWebRequest);
 
-            /*System.out.println(sb.toString());*/
-            String tmp = JwtUtils.RequestToText(nativeWebRequest);
-            System.out.println(tmp);
+        JSONObject json = JSON.parseObject(requestText);
+        Article article = new Article();
+        article.setReleaseDate(new Date());
+        article.setAuthorId(userId);
+        article.setTitle(json.getString("title"));
+        article.setContent(json.getString("content"));
+        JSONArray tagIds = json.getJSONArray("tagIds");
+        ImmutableList.Builder<Tag> builder = new ImmutableList.Builder<Tag>();
+        for (int i = 0; i < tagIds.size(); i++) {
+            int tagId = tagIds.getIntValue(i);
+            Tag tag = tagRepository.findTagByTagId(tagId);
+            if (tag == null) throw new TagIdNotFoundException(tagId);
+            builder.add(tag);
+        }
+        article.setTags(builder.build());
 
-            article = JSON.parseObject(tmp, Article.class);
-            System.out.println(article);
-            article.setReleaseDate(new Date());
-            article.setAuthorId(userId);
-            Objects.requireNonNull(article.getTitle(), "文章标题不能为 null");
-            Objects.requireNonNull(article.getContent(), "文章内容不能为 null");
-            Objects.requireNonNull(article.getTags(), "文章标签不能为 null");
-/*
-        try {
-            List<Integer> tagIdList = JSON.parseArray(Objects.requireNonNull(nativeWebRequest.getParameter("tag_id_list"), "文章标签不能为 null"), Integer.class);
-            ImmutableList.Builder<Tag> builder = new ImmutableList.Builder<>();
-            for (Integer tagId: tagIdList) {
-                builder.add(tagRepository.getOne(tagId));
-            }
-            article.setTags(builder.build());
-        }
-        catch (EntityNotFoundException e) {
-            throw new TagIdNotFoundException();
-        }
-*/
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+        Objects.requireNonNull(article.getTitle(), "文章标题不能为 null");
+        Objects.requireNonNull(article.getContent(), "文章内容不能为 null");
+        Objects.requireNonNull(article.getTags(), "文章标签不能为 null");
         return article;
     }
 }

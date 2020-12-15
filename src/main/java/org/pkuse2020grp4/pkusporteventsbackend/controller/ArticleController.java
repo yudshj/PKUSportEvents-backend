@@ -7,10 +7,7 @@ import org.pkuse2020grp4.pkusporteventsbackend.service.ArticleService;
 import org.pkuse2020grp4.pkusporteventsbackend.service.TagService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -51,6 +48,12 @@ public class ArticleController {
     public Result editArticle(){
         List<Tag> tags = tagService.getAllTags();
         return Result.buildSuccessResult("Got all tags.",tags);
+    }
+
+    @DeleteMapping("/api/article/delete/{id}")
+    public Result delete(@PathVariable("id") int articleId){
+        articleService.deleteById(articleId);
+        return Result.buildSuccessResult(String.format("Deleted article %d", articleId));
     }
 
 }
