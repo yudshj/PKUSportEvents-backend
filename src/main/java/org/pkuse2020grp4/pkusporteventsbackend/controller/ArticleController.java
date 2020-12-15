@@ -1,10 +1,10 @@
 package org.pkuse2020grp4.pkusporteventsbackend.controller;
 
 import org.pkuse2020grp4.pkusporteventsbackend.annotation.CheckedArticle;
+import org.pkuse2020grp4.pkusporteventsbackend.annotation.CheckedTagIdList;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.ArticleIdNotValidException;
-import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterceptor;
 import org.pkuse2020grp4.pkusporteventsbackend.service.ArticleService;
 import org.pkuse2020grp4.pkusporteventsbackend.service.TagService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.SystemException;
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,15 +33,11 @@ public class ArticleController {
         return Result.buildSuccessResult("success", article);
     }
 
-    @PostMapping("/api/article/getlist")
-    public Result getArticlesWithFilter(@RequestBody @Valid List<Tag> filterTags){
-        List<Article> list = articleService.getArticles(filterTags);
-        return Result.buildSuccessResult("Get articles with filter", list);
-    }
-
     @PostMapping("/api/article/getall")
-    public Result getAllArticles(){
-        List<Article> list = articleService.getAllArticles();
+    public Result getAllArticles(@CheckedTagIdList List<Tag> tags){
+        List<Article> list;
+        if (tags == null) list = articleService.getAllArticles();
+        else list = articleService.getArticlesByTagsFilter(tags);
         return Result.buildSuccessResult("Get all articles", list);
     }
 

@@ -1,6 +1,7 @@
 package org.pkuse2020grp4.pkusporteventsbackend.configuation;
 
 import org.pkuse2020grp4.pkusporteventsbackend.handler.ArticleHandlerMethodArgumentResolver;
+import org.pkuse2020grp4.pkusporteventsbackend.handler.TagIdListHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,20 +30,23 @@ public class WebConfig extends WebMvcConfigurationSupport {
         return new ArticleHandlerMethodArgumentResolver();
     }
 
+    @Bean
+    TagIdListHandlerMethodArgumentResolver createTagIdListHandlerMethodArgumentResolver(){
+        return new TagIdListHandlerMethodArgumentResolver();
+    }
+
     @Override
     protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(createArticleHandlerMethodArgumentResolver());
+        argumentResolvers.add(createTagIdListHandlerMethodArgumentResolver());
     }
 
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8181", "null")
-                .allowedOrigins("http://10.128.188.208:8181", "null")
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
-                .maxAge(3600)
-                .allowCredentials(true);
+                .maxAge(3600);
     }
 
 

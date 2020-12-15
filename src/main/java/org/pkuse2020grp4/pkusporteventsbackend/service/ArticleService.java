@@ -31,10 +31,10 @@ public class ArticleService {
         return articles;
     }
 
-    public List<Article> getArticles(List<Tag> filterTags){
+    public List<Article> getArticlesByTagsFilter(List<Tag> filterTags){
         List<Article> articles;
         Sort sort = Sort.by(Sort.Direction.DESC, "articleId");
-        articles = articleRepository.findArticlesByTagsIsIn(filterTags, sort);
+        articles = articleRepository.findArticlesByTagsIn(filterTags, sort);
         return articles;
     }
 

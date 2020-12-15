@@ -6,13 +6,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.Claim;
 import com.google.common.collect.ImmutableList;
 import org.pkuse2020grp4.pkusporteventsbackend.annotation.CheckedArticle;
+import org.pkuse2020grp4.pkusporteventsbackend.annotation.CheckedTagIdList;
 import org.pkuse2020grp4.pkusporteventsbackend.configuation.JwtConfig;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Article;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.TagIdNotFoundException;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
-import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterceptor;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.TagRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.UserRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
@@ -28,14 +28,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.SystemException;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.pkuse2020grp4.pkusporteventsbackend.utils.WebUtils.checkUserIdInTokenValid;
 
-public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
-    private final Logger logger = LoggerFactory.getLogger(ArticleHandlerMethodArgumentResolver.class);
-    @Autowired
-    JwtConfig jwtConfig;
+public class TagIdListHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
+    private final Logger logger = LoggerFactory.getLogger(TagIdListHandlerMethodArgumentResolver.class);
 
     @Autowired
     TagRepository tagRepository;
@@ -43,30 +43,25 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    JwtConfig jwtConfig;
+
     @Override
     public boolean supportsParameter(MethodParameter methodParameter) {
         //return methodParameter.getParameterType().equals(Article.class);
-        return methodParameter.hasParameterAnnotation(CheckedArticle.class);
+        return methodParameter.hasParameterAnnotation(CheckedTagIdList.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
-        int userId = checkUserIdInTokenValid(nativeWebRequest.getHeader("token"), jwtConfig, userRepository);
+        checkUserIdInTokenValid(nativeWebRequest.getHeader("token"), jwtConfig, userRepository);
 
         String requestText = WebUtils.RequestToText(nativeWebRequest);
 
         JSONObject json = JSON.parseObject(requestText);
 
-        Article article = new Article();
-
-        article.setArticleId(json.getInteger("articleId"));
-        article.setReleaseDate(new Date());
-        article.setAuthorId(userId);
-        article.setTitle(json.getString("title"));
-        article.setMarkdownContent(json.getString("markdownContent"));
-        article.setHtmlContent(json.getString("htmlContent"));
         if (!json.containsKey("tagIds")) {
-            throw new NullPointerException("文章标签不能为 null");
+            return null;
         }
         JSONArray tagIds = json.getJSONArray("tagIds");
         ImmutableList.Builder<Tag> builder = new ImmutableList.Builder<Tag>();
@@ -76,12 +71,6 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
             if (tag == null) throw new TagIdNotFoundException(tagId);
             builder.add(tag);
         }
-        article.setTags(builder.build());
-
-        Objects.requireNonNull(article.getTitle(), "文章标题不能为 null");
-        Objects.requireNonNull(article.getMarkdownContent(), "文章markdown内容不能为 null");
-        Objects.requireNonNull(article.getHtmlContent(), "文章html内容不能为 null");
-        // Objects.requireNonNull(article.getTags(), "文章标签不能为 null");
-        return article;
+        return builder.build();
     }
 }

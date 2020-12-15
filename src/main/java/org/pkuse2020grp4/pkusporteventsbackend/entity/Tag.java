@@ -25,7 +25,7 @@ public class Tag {
 
     private String name;
 
-    @ManyToMany(mappedBy = "tags",fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
     @JsonIgnore
-    Set<Article> articles=new HashSet<>();
+    Set<Article> articles = new HashSet<>();
 }
