@@ -11,7 +11,7 @@ public class ErrorController {
 
     @ExceptionHandler(Exception.class)
     public Result handlerException(Exception e){
-        return new Result(-1, e.getClass().getName() + ": " + e.getMessage(), null);
+        return new Result(-1, e.getClass().getSimpleName() + ": " + e.getMessage(), null);
     }
     @ExceptionHandler(NoTokenException.class)
     public Result handlerNoTokenException(NoTokenException e){

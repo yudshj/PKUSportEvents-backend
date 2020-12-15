@@ -24,13 +24,6 @@ public class ArticleService {
     @Autowired
     TagRepository tagRepository;
 
-    public List<Tag> getAllTags(){
-        List<Tag> tags;
-        Sort sort=Sort.by(Sort.Direction.ASC,"tagId");
-        tags=tagRepository.findAll(sort);
-        return tags;
-    }
-
     public List<Article> getAllArticles() {
         List<Article> articles;
         Sort sort = Sort.by(Sort.Direction.DESC, "articleId");
@@ -38,41 +31,22 @@ public class ArticleService {
         return articles;
     }
 
-    public List<Article> getArticles(List<Tag> filterTags){
+    public List<Article> getArticlesByTagsFilter(List<Tag> filterTags){
         List<Article> articles;
         Sort sort = Sort.by(Sort.Direction.DESC, "articleId");
-        articles = articleRepository.findArticlesByTagsIsIn(filterTags, sort);
+        articles = articleRepository.findArticlesByTagsIn(filterTags, sort);
         return articles;
     }
 
-    public void addArticle(Article article){
-        try {
-            List<Tag> sendTags=article.getTags();
-            List<Tag> tags=new LinkedList<>();
-
-            for (Tag t:
-                 sendTags) {
-                int tagId=t.getTagId();
-                Tag tagInBase=tagRepository.findTagByTagId(tagId);
-                if(tagInBase==null)
-                    throw new TagIdNotFoundException(tagId);
-                tags.add(tagInBase);
-            }
-
-            for (Tag tag:
-                 tags) {
-                tag.getArticles().add(article);
-                tagRepository.save(tag);
-            }
-
-            articleRepository.save(article);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
+    public void addOrModifyArticle(Article article){
+        articleRepository.save(article);
     }
 
     public void deleteById(int id) {
         articleRepository.deleteById(id);
+    }
+
+    public Article getArticle(int id) {
+        return articleRepository.findArticleByArticleId(id);
     }
 }

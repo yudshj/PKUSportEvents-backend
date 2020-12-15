@@ -38,17 +38,4 @@ public class JwtUtils {
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getClaims();
     }
-    public static String RequestToText(NativeWebRequest nativeWebRequest) throws Exception
-    {
-        HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
-        // 把reqeust的body读取到StringBuilder
-        BufferedReader reader = request.getReader();
-        StringBuilder sb = new StringBuilder();
-        char[] buf = new char[1024];
-        int rd;
-        while((rd = reader.read(buf)) != -1){
-            sb.append(buf, 0, rd);
-        }
-        return sb.toString();
-    }
 }
