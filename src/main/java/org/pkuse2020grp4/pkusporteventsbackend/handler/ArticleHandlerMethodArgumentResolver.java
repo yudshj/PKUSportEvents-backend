@@ -31,7 +31,7 @@ import javax.transaction.SystemException;
 import java.util.*;
 
 public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
-    private final Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
+    private final Logger logger = LoggerFactory.getLogger(ArticleHandlerMethodArgumentResolver.class);
     @Autowired
     JwtConfig jwtConfig;
 
@@ -62,31 +62,21 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
             throw new UserNotFoundException(userId);
         }
 
-        logger.info(String.format("User (ID %d) wants to add an article.", userId));
-
-
-        /*
-        Map<String, String[]> pmp = nativeWebRequest.getParameterMap();
-        for (Map.Entry<String, String[]> entry :
-                pmp.entrySet()) {
-            System.out.println(entry.getKey());
-            String[] strs = entry.getValue();
-            for (String s :
-                    strs) {
-                System.out.println(s);
-            }
-        }
-
-        System.out.println(sb.toString());
-        */
         String requestText = WebUtils.RequestToText(nativeWebRequest);
 
         JSONObject json = JSON.parseObject(requestText);
+
         Article article = new Article();
+
+        article.setArticleId(json.getInteger("articleId"));
         article.setReleaseDate(new Date());
         article.setAuthorId(userId);
         article.setTitle(json.getString("title"));
-        article.setContent(json.getString("content"));
+        article.setMarkdownContent(json.getString("markdownContent"));
+        article.setHtmlContent(json.getString("htmlContent"));
+        if (!json.containsKey("tagIds")) {
+            throw new NullPointerException("文章标签不能为 null");
+        }
         JSONArray tagIds = json.getJSONArray("tagIds");
         ImmutableList.Builder<Tag> builder = new ImmutableList.Builder<Tag>();
         for (int i = 0; i < tagIds.size(); i++) {
@@ -98,8 +88,9 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
         article.setTags(builder.build());
 
         Objects.requireNonNull(article.getTitle(), "文章标题不能为 null");
-        Objects.requireNonNull(article.getContent(), "文章内容不能为 null");
-        Objects.requireNonNull(article.getTags(), "文章标签不能为 null");
+        Objects.requireNonNull(article.getMarkdownContent(), "文章markdown内容不能为 null");
+        Objects.requireNonNull(article.getHtmlContent(), "文章html内容不能为 null");
+        // Objects.requireNonNull(article.getTags(), "文章标签不能为 null");
         return article;
     }
 }

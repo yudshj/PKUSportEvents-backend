@@ -12,4 +12,5 @@ public interface ArticleRepository extends JpaRepository<Article, Integer> {
     List<Article> findArticlesByAuthorId(Integer id);
     List<Article> findArticlesByReleaseDateIsAfter(Date date);
     List<Article> findArticlesByTagsIsIn(List<Tag> tags, Sort sort);
+    Article findArticleByArticleId(int articleId);
 }

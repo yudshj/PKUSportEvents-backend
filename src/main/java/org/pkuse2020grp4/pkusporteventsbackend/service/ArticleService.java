@@ -38,11 +38,15 @@ public class ArticleService {
         return articles;
     }
 
-    public void addArticle(Article article){
+    public void addOrModifyArticle(Article article){
         articleRepository.save(article);
     }
 
     public void deleteById(int id) {
         articleRepository.deleteById(id);
+    }
+
+    public Article getArticle(int id) {
+        return articleRepository.findArticleByArticleId(id);
     }
 }
