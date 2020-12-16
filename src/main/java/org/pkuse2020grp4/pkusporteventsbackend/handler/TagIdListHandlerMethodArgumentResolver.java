@@ -60,7 +60,7 @@ public class TagIdListHandlerMethodArgumentResolver implements HandlerMethodArgu
 
         JSONObject json = JSON.parseObject(requestText);
 
-        if (!json.containsKey("tagIds")) {
+        if (json == null || !json.containsKey("tagIds")) {
             return null;
         }
         JSONArray tagIds = json.getJSONArray("tagIds");
