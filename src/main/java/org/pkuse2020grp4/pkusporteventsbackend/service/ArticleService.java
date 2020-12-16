@@ -10,8 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ArticleService {
@@ -35,7 +34,14 @@ public class ArticleService {
         List<Article> articles;
         Sort sort = Sort.by(Sort.Direction.DESC, "articleId");
         articles = articleRepository.findArticlesByTagsIn(filterTags, sort);
-        return articles;
+        Set<Article> uniquedArticles=new HashSet<>(articles);
+/*
+        for (Article a:
+                uniquedArticles) {
+            System.out.println(a.getArticleId());
+        }
+*/
+        return new LinkedList<>(uniquedArticles);
     }
 
     public void addOrModifyArticle(Article article){
