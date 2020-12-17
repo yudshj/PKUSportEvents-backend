@@ -35,8 +35,10 @@ public class Article {
 
     private String title;
 
+    @Lob
     private String markdownContent;
 
+    @Lob
     private String htmlContent;
 
     @ManyToMany(fetch = FetchType.EAGER)
