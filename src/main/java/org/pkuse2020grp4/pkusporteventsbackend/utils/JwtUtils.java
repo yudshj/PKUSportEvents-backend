@@ -38,4 +38,14 @@ public class JwtUtils {
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getClaims();
     }
+
+    public static int getUserId(String token) {
+        try {
+            DecodedJWT jwt = JWT.decode(token);
+            return jwt.getClaim("user_id").asInt();
+        } catch (Exception e) {
+            return -1;
+        }
+    }
+
 }
