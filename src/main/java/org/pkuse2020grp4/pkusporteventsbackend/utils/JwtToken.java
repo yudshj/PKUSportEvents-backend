@@ -1,2 +1,21 @@
-package org.pkuse2020grp4.pkusporteventsbackend.utils;public class JwtToken {
+package org.pkuse2020grp4.pkusporteventsbackend.utils;
+
+import org.apache.shiro.authc.AuthenticationToken;
+
+public class JwtToken implements AuthenticationToken {
+    private String token;
+
+    public JwtToken(String token) {
+        this.token = token;
+    }
+
+    @Override
+    public Object getPrincipal() {
+        return token;
+    }
+
+    @Override
+    public Object getCredentials() {
+        return token;
+    }
 }
