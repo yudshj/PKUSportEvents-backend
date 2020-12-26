@@ -6,6 +6,7 @@ import org.pkuse2020grp4.pkusporteventsbackend.dto.ApplyFormDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.CheckDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.ApplyForm;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
+import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
 import org.pkuse2020grp4.pkusporteventsbackend.service.ApplyFormService;
 import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
@@ -24,7 +25,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/api/userinfo")
-    public Result getUserInfo(@CheckedUserId int userId) {
+    public Result getUserInfo(@CheckedUserId int userId) throws UserNotFoundException {
         return Result.buildSuccessResult("Get user info.", userService.getUserDTOByUserId(userId));
     }
 
