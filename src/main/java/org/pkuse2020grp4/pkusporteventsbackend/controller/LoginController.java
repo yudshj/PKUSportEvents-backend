@@ -1,6 +1,7 @@
 package org.pkuse2020grp4.pkusporteventsbackend.controller;
 
 import org.pkuse2020grp4.pkusporteventsbackend.configuation.JwtConfig;
+import org.pkuse2020grp4.pkusporteventsbackend.dto.LoginResponseDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
@@ -25,10 +26,10 @@ public class LoginController {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
-        int status = userService.getUserId(user);
-        user.setUserId(status);
+        int userId = userService.getUserId(user);
+        user.setUserId(userId);
         String token = JwtUtils.sign(user, jwtConfig);
-        return Result.buildSuccessResult("登录成功", token);
+        return Result.buildSuccessResult("登录成功", new LoginResponseDTO(token, userId));
     }
 
     @PostMapping("/api/register")
