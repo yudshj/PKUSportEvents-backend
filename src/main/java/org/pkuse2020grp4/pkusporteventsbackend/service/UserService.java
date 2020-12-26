@@ -48,7 +48,12 @@ public class UserService {
     //     return userRepository.findUserByUsername(username).getSalt();
     // }
 
-    public void updatePermission(int userId, int perm) {
-
+    public void updatePermission(int userId, int perm) throws Exception{
+        User user = userRepository.findUserByUserId(userId);
+        if (user.getPermission() <= perm) {
+            throw new Exception(String.format("Permission already higher than %d.", perm));
+        }
+        user.setPermission(perm);
+        userRepository.save(user);
     }
 }
