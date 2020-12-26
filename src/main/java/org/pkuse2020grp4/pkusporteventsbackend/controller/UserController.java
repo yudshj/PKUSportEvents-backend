@@ -39,8 +39,8 @@ public class UserController {
         return Result.buildSuccessResult("Get all applies.", applyFormService.getAll());
     }
 
-    @PostMapping("/api/perm/check/{id}")
-    public Result checkApply(@RequestBody CheckDTO checkDTO) {
+    @PostMapping("/api/perm/check")
+    public Result checkApply(@RequestBody CheckDTO checkDTO) throws Exception {
         ApplyForm applyForm = applyFormService.getAndRemove(checkDTO.getApplyId());
         if (checkDTO.getAllow() == 1) {
             userService.updatePermission(applyForm.getUserId(), applyForm.getPermission());
