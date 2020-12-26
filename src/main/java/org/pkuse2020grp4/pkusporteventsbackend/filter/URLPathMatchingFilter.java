@@ -2,10 +2,8 @@ package org.pkuse2020grp4.pkusporteventsbackend.filter;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.web.filter.PathMatchingFilter;
-import org.pkuse2020grp4.pkusporteventsbackend.configuation.JwtConfig;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.NoTokenException;
-import org.pkuse2020grp4.pkusporteventsbackend.exception.PermissionDeniedException;
 import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
 import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
