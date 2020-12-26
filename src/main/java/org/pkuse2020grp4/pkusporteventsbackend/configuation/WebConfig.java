@@ -1,7 +1,9 @@
 package org.pkuse2020grp4.pkusporteventsbackend.configuation;
 
+import org.pkuse2020grp4.pkusporteventsbackend.handler.ApplyFormHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.handler.ArticleHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.handler.TagIdListHandlerMethodArgumentResolver;
+import org.pkuse2020grp4.pkusporteventsbackend.handler.UserIdHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -57,10 +59,22 @@ public class WebConfig extends WebMvcConfigurationSupport {
         return new TagIdListHandlerMethodArgumentResolver();
     }
 
+    @Bean
+    UserIdHandlerMethodArgumentResolver createUserIdListHandlerMethodArgumentResolver(){
+        return new UserIdHandlerMethodArgumentResolver();
+    }
+
+    @Bean
+    ApplyFormHandlerMethodArgumentResolver createApplyFormListHandlerMethodArgumentResolver(){
+        return new ApplyFormHandlerMethodArgumentResolver();
+    }
+
     @Override
     protected void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(createArticleHandlerMethodArgumentResolver());
         argumentResolvers.add(createTagIdListHandlerMethodArgumentResolver());
+        argumentResolvers.add(createUserIdListHandlerMethodArgumentResolver());
+        argumentResolvers.add(createApplyFormListHandlerMethodArgumentResolver());
     }
 
 

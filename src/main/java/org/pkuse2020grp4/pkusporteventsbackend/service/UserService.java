@@ -1,5 +1,6 @@
 package org.pkuse2020grp4.pkusporteventsbackend.service;
 
+import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.PasswordNotValidException;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
@@ -34,6 +35,11 @@ public class UserService {
         return 0;
     }
 
+    public UserDTO getUserDTOByUserId(int userId) {
+        User tmp = userRepository.findUserByUserId(userId);
+        return new UserDTO(tmp.getUserId(), tmp.getUsername(), null, tmp.getPermission(), null);
+    }
+
     public Boolean existUser(String username){
         return userRepository.existsUserByUsername(username);
     }
@@ -41,4 +47,8 @@ public class UserService {
     // public String getSalt(String username){
     //     return userRepository.findUserByUsername(username).getSalt();
     // }
+
+    public void updatePermission(int userId, int perm) {
+
+    }
 }
