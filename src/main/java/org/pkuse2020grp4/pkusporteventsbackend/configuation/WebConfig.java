@@ -98,30 +98,4 @@ public class WebConfig extends WebMvcConfigurationSupport {
                 .maxAge(3600);
     }
 
-    @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        StringHttpMessageConverter converter = new StringHttpMessageConverter(
-                Charset.forName("UTF-8"));
-        converters.add(converter);
-
-        //1.需要定义一个convert转换消息的对象;
-        FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
-        //2.添加fastJson的配置信息，比如：是否要格式化返回的json数据;
-        FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat,
-                SerializerFeature.WriteMapNullValue,
-                SerializerFeature.WriteNullStringAsEmpty,
-                SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.WriteNullListAsEmpty,
-                SerializerFeature.WriteDateUseDateFormat);
-        //3处理中文乱码问题
-        List<MediaType> fastMediaTypes = new ArrayList<>();
-        fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
-        //4.在convert中添加配置信息.
-        fastJsonHttpMessageConverter.setSupportedMediaTypes(fastMediaTypes);
-        fastJsonHttpMessageConverter.setFastJsonConfig(fastJsonConfig);
-        //5.将convert添加到converters当中.
-        converters.add(fastJsonHttpMessageConverter);
-
-    }
 }
