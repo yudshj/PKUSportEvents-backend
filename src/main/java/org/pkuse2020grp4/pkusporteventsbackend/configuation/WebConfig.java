@@ -1,5 +1,8 @@
 package org.pkuse2020grp4.pkusporteventsbackend.configuation;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.pkuse2020grp4.pkusporteventsbackend.handler.ApplyFormHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.handler.ArticleHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.handler.TagIdListHandlerMethodArgumentResolver;
@@ -7,6 +10,9 @@ import org.pkuse2020grp4.pkusporteventsbackend.handler.UserIdHandlerMethodArgume
 import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -15,6 +21,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
+import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -89,6 +97,5 @@ public class WebConfig extends WebMvcConfigurationSupport {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
-
 
 }

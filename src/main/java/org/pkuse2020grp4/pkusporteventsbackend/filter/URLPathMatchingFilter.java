@@ -10,6 +10,7 @@ import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.security.sasl.AuthenticationException;
@@ -52,8 +53,10 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
         if(token == null){
             throw new NoTokenException("没有在Header中发现`token`.");
         }
-
-        UserDTO user = userService.getUserDTOByUserId(JwtUtils.getUserId(token));
+        Integer id = JwtUtils.getUserId(token);
+        if(id == null)
+            throw new AuthenticationException("User token invalid");
+        UserDTO user = userService.getUserDTOByUserId(id);
         List<String> list = perm.permAPI.get(user.getPermission());
         Set<String> permAPIs = new HashSet<>(list);
         for(String api: permAPIs){
