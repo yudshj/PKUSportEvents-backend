@@ -28,6 +28,7 @@ public class ShiroErrorController extends BasicErrorController {
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("msg",exception.getMessage());
         map.put("code",1);
+        map.put("data",null);
         return new ResponseEntity<Map<String, Object>>(map, status);
     }
 }
