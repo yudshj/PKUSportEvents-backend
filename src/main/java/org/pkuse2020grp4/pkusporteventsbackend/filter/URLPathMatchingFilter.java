@@ -2,6 +2,7 @@ package org.pkuse2020grp4.pkusporteventsbackend.filter;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.web.filter.PathMatchingFilter;
+import org.apache.shiro.web.util.WebUtils;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.NoTokenException;
 import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
@@ -35,7 +36,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
             httpServletResponse.setHeader("Access-Control-Allow-Methods", httpServletRequest.getMethod());
             httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            return true;
+            return false;
         }
         return super.preHandle(request, response);
     }
@@ -44,12 +45,6 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception{
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-        if (httpServletRequest.getMethod().equals(RequestMethod.OPTIONS.name())) {
-            httpServletResponse.setHeader("Access-control-Allow-Origin", httpServletRequest.getHeader("Origin"));
-            httpServletResponse.setHeader("Access-Control-Allow-Methods", httpServletRequest.getMethod());
-            httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
-            httpServletResponse.setStatus(HttpStatus.OK.value());
-        }
 
         String requestAPI = getPathWithinApplication(request);
 
@@ -67,4 +62,5 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
         }
         throw new AuthenticationException("Permission denied!");
     }
+
 }

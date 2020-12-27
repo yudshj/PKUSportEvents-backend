@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class LoginController {
@@ -28,7 +30,10 @@ public class LoginController {
         int status = userService.getUserId(user);
         user.setUserId(status);
         String token = JwtUtils.sign(user, jwtConfig);
-        return Result.buildSuccessResult("登录成功", token);
+        Map<String, Object> data = new HashMap<>();
+        data.put("token", token);
+        data.put("uid", status);
+        return Result.buildSuccessResult("登录成功", data);
     }
 
     @PostMapping("/api/register")
