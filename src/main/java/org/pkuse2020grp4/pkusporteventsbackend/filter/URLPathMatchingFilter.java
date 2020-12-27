@@ -28,6 +28,8 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception{
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         // 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
@@ -43,6 +45,8 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
 
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception{
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 

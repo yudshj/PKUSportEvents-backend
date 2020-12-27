@@ -89,6 +89,4 @@ public class WebConfig extends WebMvcConfigurationSupport {
                 .allowCredentials(true)
                 .maxAge(3600);
     }
-
-
 }
