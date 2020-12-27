@@ -49,7 +49,6 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
             httpServletResponse.setHeader("Access-Control-Allow-Methods", httpServletRequest.getMethod());
             httpServletResponse.setHeader("Access-Control-Allow-Headers", httpServletRequest.getHeader("Access-Control-Request-Headers"));
             httpServletResponse.setStatus(HttpStatus.OK.value());
-            return true;
         }
 
         String requestAPI = getPathWithinApplication(request);
