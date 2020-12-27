@@ -4,7 +4,6 @@ import org.pkuse2020grp4.pkusporteventsbackend.handler.ApplyFormHandlerMethodArg
 import org.pkuse2020grp4.pkusporteventsbackend.handler.ArticleHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.handler.TagIdListHandlerMethodArgumentResolver;
 import org.pkuse2020grp4.pkusporteventsbackend.handler.UserIdHandlerMethodArgumentResolver;
-import org.pkuse2020grp4.pkusporteventsbackend.interceptor.ArticleInterceptor;
 import org.pkuse2020grp4.pkusporteventsbackend.interceptor.AuthenticationInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
