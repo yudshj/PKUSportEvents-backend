@@ -10,6 +10,7 @@ import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.security.sasl.AuthenticationException;
@@ -29,7 +30,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
     @Override
     protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception{
         request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(String.valueOf(MediaType.APPLICATION_JSON_UTF8));
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         // 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
@@ -46,7 +47,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
     @Override
     protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception{
         request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
+        response.setContentType(String.valueOf(MediaType.APPLICATION_JSON_UTF8));
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
