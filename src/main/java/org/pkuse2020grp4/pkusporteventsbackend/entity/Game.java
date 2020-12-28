@@ -29,6 +29,7 @@ public class Game {
 
     private String title;
 
+    @Lob
     private String content;
 
     @ElementCollection(fetch = FetchType.EAGER)

@@ -1,5 +1,6 @@
 package org.pkuse2020grp4.pkusporteventsbackend.service;
 
+import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.PasswordNotValidException;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
@@ -7,6 +8,8 @@ import org.pkuse2020grp4.pkusporteventsbackend.repo.UserRepository;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.UID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -34,6 +37,15 @@ public class UserService {
         return 0;
     }
 
+    public UserDTO getUserDTOByUserId(int userId) throws UserNotFoundException {
+        Optional<User> option = userRepository.findById(userId);
+        if (option.isPresent()) {
+            User tmp = option.get();
+            return new UserDTO(tmp.getUserId(), tmp.getUsername(), null, tmp.getPermission(), null);
+        }
+        throw new UserNotFoundException(userId);
+    }
+
     public Boolean existUser(String username){
         return userRepository.existsUserByUsername(username);
     }
@@ -41,4 +53,13 @@ public class UserService {
     // public String getSalt(String username){
     //     return userRepository.findUserByUsername(username).getSalt();
     // }
+
+    public void updatePermission(int userId, int perm) throws Exception{
+        User user = userRepository.findUserByUserId(userId);
+        if (user.getPermission() <= perm) {
+            throw new Exception(String.format("Permission already higher than %d.", perm));
+        }
+        user.setPermission(perm);
+        userRepository.save(user);
+    }
 }
