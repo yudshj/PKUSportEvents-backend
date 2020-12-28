@@ -9,6 +9,8 @@ import org.pkuse2020grp4.pkusporteventsbackend.utils.UID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     @Autowired
@@ -35,9 +37,13 @@ public class UserService {
         return 0;
     }
 
-    public UserDTO getUserDTOByUserId(int userId) {
-        User tmp = userRepository.findUserByUserId(userId);
-        return new UserDTO(tmp.getUserId(), tmp.getUsername(), null, tmp.getPermission(), null);
+    public UserDTO getUserDTOByUserId(int userId) throws UserNotFoundException {
+        Optional<User> option = userRepository.findById(userId);
+        if (option.isPresent()) {
+            User tmp = option.get();
+            return new UserDTO(tmp.getUserId(), tmp.getUsername(), null, tmp.getPermission(), null);
+        }
+        throw new UserNotFoundException(userId);
     }
 
     public Boolean existUser(String username){

@@ -9,6 +9,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
+import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
 import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
 import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtToken;
@@ -31,8 +32,13 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        Integer userId = JwtUtils.getUserId(principals.toString());
-        UserDTO user = userService.getUserDTOByUserId(userId);
+        int userId = JwtUtils.getUserId(principals.toString());
+        UserDTO user = null;
+        try {
+            user = userService.getUserDTOByUserId(userId);
+        } catch (UserNotFoundException e) {
+            e.printStackTrace();
+        }
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRole(perm.permToString(user.getPermission()));
         Set<String> permission = new HashSet<>(perm.permAPI.get(user.getPermission()));
@@ -49,7 +55,12 @@ public class ShiroRealm extends AuthorizingRealm {
             throw new AuthenticationException("token invalid");
         }
 
-        UserDTO userBean = userService.getUserDTOByUserId(userId);
+        UserDTO userBean;
+        try {
+            userBean = userService.getUserDTOByUserId(userId);
+        } catch (UserNotFoundException e) {
+            throw new AuthenticationException("User didn't existed!");
+        }
         if (userBean == null) {
             throw new AuthenticationException("User didn't existed!");
         }

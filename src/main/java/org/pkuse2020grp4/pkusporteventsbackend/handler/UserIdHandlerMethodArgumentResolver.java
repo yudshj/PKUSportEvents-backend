@@ -44,7 +44,15 @@ public class UserIdHandlerMethodArgumentResolver implements HandlerMethodArgumen
     @Override
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer, NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory) throws Exception {
         int userId = checkUserIdInTokenValid(nativeWebRequest.getHeader("token"), jwtConfig, userRepository);
-        logger.info(String.format("UserId: %d got user info.", userId));
-        return userId;
+
+        String requestText = WebUtils.RequestToText(nativeWebRequest);
+
+        JSONObject json = JSON.parseObject(requestText);
+
+        int requestUserId = json.containsKey("userId") ? json.getIntValue("userId") : userId;
+        // 如果用户没有提供需要查询的userId，则使用自身的userId
+
+        logger.info(String.format("UserId: %d got user %d info.", userId, requestUserId));
+        return requestUserId;
     }
 }
