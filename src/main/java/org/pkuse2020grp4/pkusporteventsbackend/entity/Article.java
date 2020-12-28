@@ -35,9 +35,14 @@ public class Article {
 
     private String title;
 
+    @Lob
     private String markdownContent;
 
+    @Lob
     private String htmlContent;
+
+    @Lob
+    private String abstractContent;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "r_article_tag",

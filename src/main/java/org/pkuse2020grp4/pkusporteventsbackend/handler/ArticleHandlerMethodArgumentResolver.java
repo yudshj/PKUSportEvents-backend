@@ -65,6 +65,7 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
         article.setTitle(json.getString("title"));
         article.setMarkdownContent(json.getString("markdownContent"));
         article.setHtmlContent(json.getString("htmlContent"));
+        article.setAbstractContent(json.getString("abstractContent"));
         if (!json.containsKey("tagIds")) {
             throw new NullPointerException("文章标签不能为 null");
         }
@@ -81,6 +82,7 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
         Objects.requireNonNull(article.getTitle(), "文章标题不能为 null");
         Objects.requireNonNull(article.getMarkdownContent(), "文章markdown内容不能为 null");
         Objects.requireNonNull(article.getHtmlContent(), "文章html内容不能为 null");
+        Objects.requireNonNull(article.getAbstractContent(), "文章摘要不能为 null");
         // Objects.requireNonNull(article.getTags(), "文章标签不能为 null");
         return article;
     }

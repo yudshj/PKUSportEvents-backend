@@ -2,11 +2,11 @@ package org.pkuse2020grp4.pkusporteventsbackend.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.List;
+
+import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
 
 @Data
 @NoArgsConstructor
@@ -27,13 +27,15 @@ public class User {
 
     private String password;
 
+    private int permission = perm.DEFAULT;
+
     // private String salt;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "r_user_tag",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "tag_id")})
-    private List<Tag> interestTags;
+    // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    // @JoinTable(name = "r_user_tag",
+    //         joinColumns = {@JoinColumn(name = "user_id")},
+    //         inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    // private List<Tag> interestTags;
 
     public User(String username, String password){
         this.password = password;
