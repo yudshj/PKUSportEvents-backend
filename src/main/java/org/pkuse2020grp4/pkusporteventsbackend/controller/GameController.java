@@ -18,7 +18,10 @@ public class GameController {
 
     @PostMapping("/api/game/get/{id}")
     public Result get(@PathVariable("id") int gameId) {
-        return Result.buildSuccessResult("success", gameId + "data");
+        Game game=gameService.getGameById(gameId);
+        if(game==null)
+            return Result.buildFailResult("Game not found!");
+        return Result.buildSuccessResult("success", game);
     }
 
     @PostMapping("/api/game/getByMark/{mark}")

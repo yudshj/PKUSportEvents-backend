@@ -42,6 +42,12 @@ public class LoginController {
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
         user.setPermission(perm.DEFAULT);
+        user.setIconUrl(userDTO.getIconUrl());
+        user.setSignature(userDTO.getSignature());
+        if(user.getIconUrl()==null||user.getIconUrl().isEmpty())
+            user.setIconUrl("https://pic3.zhimg.com/aadd7b895_l.jpg?source=1940ef5c");
+        if(user.getSignature()==null||user.getSignature().isEmpty())
+            user.setSignature("这个人很懒，没有写个人签名");
         int status = userService.registerUser(user);
         switch (status) {
             case 0:

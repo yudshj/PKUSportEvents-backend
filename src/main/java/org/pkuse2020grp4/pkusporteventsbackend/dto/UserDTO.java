@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.Tag;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
@@ -23,6 +24,12 @@ public class UserDTO {
     private String password;
 
     private int permission;
+
+    @Lob
+    private String iconUrl;
+
+    @Lob
+    private String signature;
 
     private List<Tag> interestTags;
 }

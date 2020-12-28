@@ -44,6 +44,9 @@ public class Article {
     @Lob
     private String abstractContent;
 
+    @Lob
+    private String pictureUrl;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "r_article_tag",
             joinColumns = {@JoinColumn(name = "article_id")},

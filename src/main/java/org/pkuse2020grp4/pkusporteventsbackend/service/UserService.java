@@ -31,6 +31,7 @@ public class UserService {
         if (user.getPassword().length() < 6)
             return 2;
         user.setUserId(UID.genNewUID());
+        System.out.println(user.getUserId());
         // user.setSalt(Salt.generateSalt(0));
         // user.setPassword(Salt.salty(user.getPassword(), user.getSalt(), 0));
         userRepository.save(user);
@@ -41,7 +42,8 @@ public class UserService {
         Optional<User> option = userRepository.findById(userId);
         if (option.isPresent()) {
             User tmp = option.get();
-            return new UserDTO(tmp.getUserId(), tmp.getUsername(), null, tmp.getPermission(), null);
+            return new UserDTO(tmp.getUserId(), tmp.getUsername(), null, tmp.getPermission(),
+                    tmp.getIconUrl(), tmp.getSignature(), null);
         }
         throw new UserNotFoundException(userId);
     }

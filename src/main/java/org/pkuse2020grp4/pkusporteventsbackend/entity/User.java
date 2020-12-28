@@ -29,6 +29,12 @@ public class User {
 
     private int permission = perm.DEFAULT;
 
+    @Lob
+    private String iconUrl;
+
+    @Lob
+    private String signature;
+
     // private String salt;
 
     // @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
