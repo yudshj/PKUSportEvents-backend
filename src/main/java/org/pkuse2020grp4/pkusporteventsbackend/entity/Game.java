@@ -32,8 +32,20 @@ public class Game {
     @Lob
     private String content;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    private int homeId;
+
+    private String homeName;
+
+    private int homeScore;
+
+    private int awayId;
+
+    private String awayName;
+
+    private int awayScore;
+
+/*    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "game_team", joinColumns = @JoinColumn(name = "game_id"))
-    private Set<Team> teams=new HashSet<>();
+    private Set<Team> teams=new HashSet<>();*/
 }
 

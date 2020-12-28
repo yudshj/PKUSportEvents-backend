@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface GameRepository extends JpaRepository<Game, Integer> {
     List<Game> findAllByMark(Integer mark, Sort sort);
+    Game findGameByGameId(int gameId);
 }

@@ -66,6 +66,7 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
         article.setMarkdownContent(json.getString("markdownContent"));
         article.setHtmlContent(json.getString("htmlContent"));
         article.setAbstractContent(json.getString("abstractContent"));
+        article.setPictureUrl(json.getString("pictureUrl"));
         if (!json.containsKey("tagIds")) {
             throw new NullPointerException("文章标签不能为 null");
         }
@@ -84,6 +85,9 @@ public class ArticleHandlerMethodArgumentResolver implements HandlerMethodArgume
         Objects.requireNonNull(article.getHtmlContent(), "文章html内容不能为 null");
         Objects.requireNonNull(article.getAbstractContent(), "文章摘要不能为 null");
         // Objects.requireNonNull(article.getTags(), "文章标签不能为 null");
+        if(article.getPictureUrl()==null||article.getPictureUrl().isEmpty())
+            article.setPictureUrl("https://pic3.zhimg.com/aadd7b895_l.jpg?source=1940ef5c");
+
         return article;
     }
 }

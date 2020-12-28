@@ -10,7 +10,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
-import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
+import org.pkuse2020grp4.pkusporteventsbackend.perm.Perms;
 import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtToken;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
@@ -37,11 +37,12 @@ public class ShiroRealm extends AuthorizingRealm {
         try {
             user = userService.getUserDTOByUserId(userId);
         } catch (UserNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
+        assert user != null;
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
-        simpleAuthorizationInfo.addRole(perm.permToString(user.getPermission()));
-        Set<String> permission = new HashSet<>(perm.permAPI.get(user.getPermission()));
+        simpleAuthorizationInfo.addRole(Perms.permToString(user.getPermission()));
+        Set<String> permission = new HashSet<>(Perms.permAPI.get(user.getPermission()));
         simpleAuthorizationInfo.addStringPermissions(permission);
         return simpleAuthorizationInfo;
     }
@@ -50,8 +51,8 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken auth) throws AuthenticationException {
         String token = (String) auth.getCredentials();
         // 解密获得username，用于和数据库进行对比
-        Integer userId = JwtUtils.getUserId(token);
-        if (userId == null) {
+        int userId = JwtUtils.getUserId(token);
+        if (userId == -1) {
             throw new AuthenticationException("token invalid");
         }
 

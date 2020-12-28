@@ -15,6 +15,11 @@ public class GameService {
     @Autowired
     GameRepository gameRepository;
 
+    public Game getGameById(int gameId)
+    {
+        return gameRepository.findGameByGameId(gameId);
+    }
+
     public List<Game> getAllGames()
     {
         Sort sort = Sort.by(Sort.Direction.DESC, "gameId");
@@ -41,7 +46,7 @@ public class GameService {
             gameRepository.save(game);
         }
         catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 }

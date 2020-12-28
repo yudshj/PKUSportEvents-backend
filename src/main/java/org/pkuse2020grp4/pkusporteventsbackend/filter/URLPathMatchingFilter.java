@@ -2,15 +2,13 @@ package org.pkuse2020grp4.pkusporteventsbackend.filter;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.web.filter.PathMatchingFilter;
-import org.apache.shiro.web.util.WebUtils;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.NoTokenException;
-import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
+import org.pkuse2020grp4.pkusporteventsbackend.perm.Perms;
 import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.security.sasl.AuthenticationException;
@@ -28,7 +26,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
     private UserService userService;
 
     @Override
-    protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception{
+    protected boolean preHandle(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         // 跨域时会首先发送一个option请求，这里我们给option请求直接返回正常状态
@@ -43,7 +41,7 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
     }
 
     @Override
-    protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception{
+    protected boolean onPreHandle(ServletRequest request, ServletResponse response, Object mappedValue) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
@@ -53,11 +51,11 @@ public class URLPathMatchingFilter extends PathMatchingFilter {
         if(token == null){
             throw new NoTokenException("没有在Header中发现`token`.");
         }
-        Integer id = JwtUtils.getUserId(token);
-        if(id == null)
+        int id = JwtUtils.getUserId(token);
+        if(id == -1)
             throw new AuthenticationException("User token invalid");
         UserDTO user = userService.getUserDTOByUserId(id);
-        List<String> list = perm.permAPI.get(user.getPermission());
+        List<String> list = Perms.permAPI.get(user.getPermission());
         Set<String> permAPIs = new HashSet<>(list);
         for(String api: permAPIs){
             if(requestAPI.startsWith(api))

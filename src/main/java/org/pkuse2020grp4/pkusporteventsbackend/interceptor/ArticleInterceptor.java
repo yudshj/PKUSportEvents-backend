@@ -3,8 +3,7 @@ package org.pkuse2020grp4.pkusporteventsbackend.interceptor;
 import com.auth0.jwt.interfaces.Claim;
 import org.pkuse2020grp4.pkusporteventsbackend.configuation.JwtConfig;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
-import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
-import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
+import org.pkuse2020grp4.pkusporteventsbackend.perm.Perms;
 import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
 import org.slf4j.Logger;
@@ -33,9 +32,6 @@ public class ArticleInterceptor implements HandlerInterceptor {
 
         UserDTO userDTO = userService.getUserDTOByUserId(verify.get("user_id").asInt());
 
-        if(userDTO.getPermission() <= perm.PUBLISHER)
-            return true;
-
-        return false;
+        return userDTO.getPermission() <= Perms.PUBLISHER;
     }
 }
