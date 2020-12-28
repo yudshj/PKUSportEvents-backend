@@ -14,8 +14,8 @@ public class perm {
     static public final Map<Integer, List<String>> permAPI = new HashMap<>(){{
         put(ROOT, Arrays.asList("/api"));
         put(ADMIN, Arrays.asList("/api"));
-        put(PUBLISHER, Arrays.asList("/api/login", "/api/register", "/api/article", "/api/game/get", "/api/userinfo", "/api/perm/apply", "/api/perm/check"));
-        put(READER, Arrays.asList("/api/login", "/api/register", "/api/article/get", "/api/game/get", "/api/userinfo", "/api/perm/apply", "/api/perm/check"));
+        put(PUBLISHER, Arrays.asList("/api/login", "/api/register", "/api/article/get", "/api/article/add", "/api/article/edit", "/api/game/get", "/api/userinfo", "/api/perm/apply"));
+        put(READER, Arrays.asList("/api/login", "/api/register", "/api/article/get", "/api/game/get", "/api/userinfo", "/api/perm/apply"));
     }};
 
     static public String permToString(Integer perm){
