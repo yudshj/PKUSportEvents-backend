@@ -5,7 +5,6 @@ import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.PasswordNotValidException;
 import org.pkuse2020grp4.pkusporteventsbackend.exception.UserNotFoundException;
 import org.pkuse2020grp4.pkusporteventsbackend.repo.UserRepository;
-import org.pkuse2020grp4.pkusporteventsbackend.utils.UID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +29,8 @@ public class UserService {
             return 1;
         if (user.getPassword().length() < 6)
             return 2;
-        user.setUserId(UID.genNewUID());
-        System.out.println(user.getUserId());
+        // user.setUserId(0);
+        // System.out.println(user.getUserId());
         // user.setSalt(Salt.generateSalt(0));
         // user.setPassword(Salt.salty(user.getPassword(), user.getSalt(), 0));
         userRepository.save(user);

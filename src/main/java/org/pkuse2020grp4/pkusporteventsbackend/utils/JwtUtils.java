@@ -28,7 +28,7 @@ public class JwtUtils {
                     .withExpiresAt(expire)
                     .sign(Algorithm.HMAC256(jwtConfig.getSecret()));
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return token;
     }

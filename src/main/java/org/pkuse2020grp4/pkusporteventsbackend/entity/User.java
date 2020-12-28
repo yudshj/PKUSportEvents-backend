@@ -6,7 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 
-import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
+import org.pkuse2020grp4.pkusporteventsbackend.perm.Perms;
 
 @Data
 @NoArgsConstructor
@@ -27,7 +27,7 @@ public class User {
 
     private String password;
 
-    private int permission = perm.DEFAULT;
+    private int permission = Perms.DEFAULT;
 
     @Lob
     private String iconUrl;

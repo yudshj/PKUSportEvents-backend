@@ -3,7 +3,7 @@ package org.pkuse2020grp4.pkusporteventsbackend.controller;
 import org.pkuse2020grp4.pkusporteventsbackend.configuation.JwtConfig;
 import org.pkuse2020grp4.pkusporteventsbackend.dto.UserDTO;
 import org.pkuse2020grp4.pkusporteventsbackend.entity.User;
-import org.pkuse2020grp4.pkusporteventsbackend.perm.perm;
+import org.pkuse2020grp4.pkusporteventsbackend.perm.Perms;
 import org.pkuse2020grp4.pkusporteventsbackend.service.UserService;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.JwtUtils;
 import org.pkuse2020grp4.pkusporteventsbackend.utils.Result;
@@ -41,7 +41,7 @@ public class LoginController {
         User user = new User();
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
-        user.setPermission(perm.DEFAULT);
+        user.setPermission(Perms.DEFAULT);
         user.setIconUrl(userDTO.getIconUrl());
         user.setSignature(userDTO.getSignature());
         if(user.getIconUrl()==null||user.getIconUrl().isEmpty())
